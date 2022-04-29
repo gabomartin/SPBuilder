@@ -15,7 +15,7 @@ namespace SPBuilder
         private SqlConnection _conn;
         private SqlCommand _cmd;
         private SqlDataReader _reader;
-        private DataTable _result = new DataTable();
+        private DataTable _result = new DataTable(); 
 
         public SPBuilder(string procedureName, string connectionString)
         {
@@ -87,6 +87,22 @@ namespace SPBuilder
         public SPBuilder AddDateTime(string nombreParametro, DateTime valorParametro)
         {
             _cmd.Parameters.Add($"@{nombreParametro}", SqlDbType.DateTime).Value = valorParametro;
+            return this;
+        }
+        public SPBuilder AddWithValue(string nombreParametro, object valorParametro)
+        {
+            _cmd.Parameters.AddWithValue($"@{nombreParametro}", valorParametro);
+            return this;
+        }
+        public SPBuilder AddNullType(SqlDbType dbType, string nombreParametro)
+        {
+            _cmd.Parameters.Add($"@{nombreParametro}", dbType).Value = DBNull.Value;
+            return this;
+        }
+        //NOT TESTED!!!!
+        public SPBuilder AddType(SqlDbType dbType, string nombreParametro, object valorParametro)
+        {
+            _cmd.Parameters.Add($"@{nombreParametro}", dbType).Value = valorParametro;
             return this;
         }
 
